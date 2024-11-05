@@ -6,6 +6,35 @@ Generate an outfit by describing the color, pattern, fit, style, material, type,
 
 FLUX.1-dev LoRA Outfit Generator can create an outfit by detailing the color, pattern, fit, style, material, and type.
 
+## Inference
+
+```
+import random
+
+from diffusers import FluxPipeline
+import torch
+
+seed=42
+prompt = "denim dark blue 5-pocket ankle-length jeans in washed stretch denim slightly looser fit with a wide waist panel for best fit over the tummy and tapered legs with raw-edge frayed hems"
+PRE_TRAINED_MODEL = "black-forest-labs/FLUX.1-dev"
+FINE_TUNED_MODEL = "tryonlabs/FLUX.1-dev-Outfit-Generator"
+
+# Load Flux
+pipe = FluxPipeline.from_pretrained(PRE_TRAINED_MODEL, torch_dtype=torch.float16).to("cuda")
+
+# Load fine-tuned model
+pipe.load_lora_weights(FINE_TUNED_MODEL, adapter_name="default", weight_name="outfit-generator.safetensors")
+
+seed = random.randint(0, MAX_SEED)
+
+generator = torch.Generator().manual_seed(seed)
+
+image = pipe(prompt, height=1024, width=1024, num_images_per_prompt=1, generator=generator, 
+guidance_scale=4.5, num_inference_steps=40).images[0]
+
+image.save("gen_image.jpg")
+```
+
 ## Dataset used
 
 H&M Fashion Captions Dataset - 20.5k samples
