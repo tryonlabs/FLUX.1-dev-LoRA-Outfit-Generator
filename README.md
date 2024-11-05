@@ -54,5 +54,4 @@ gradio app.py
 ***
 
 ## License
-
-[License](LICENSE) them in the Files & versions tab.
+MIT [License](LICENSE)
