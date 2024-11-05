@@ -1,0 +1,5 @@
+spaces
+gradio
+diffusers
+torch
+numpy
