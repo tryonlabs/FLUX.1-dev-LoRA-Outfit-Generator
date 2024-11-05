@@ -1,4 +1,4 @@
-# FLUX.1-dev Outfit Generator Gradio Demo
+# FLUX.1-dev LoRA Outfit Generator Gradio Demo
 ## by TryOn Labs (https://www.tryonlabs.ai)
 Generate an outfit by describing the color, pattern, fit, style, material, type, etc.
 
@@ -17,7 +17,7 @@ import torch
 seed=42
 prompt = "denim dark blue 5-pocket ankle-length jeans in washed stretch denim slightly looser fit with a wide waist panel for best fit over the tummy and tapered legs with raw-edge frayed hems"
 PRE_TRAINED_MODEL = "black-forest-labs/FLUX.1-dev"
-FINE_TUNED_MODEL = "tryonlabs/FLUX.1-dev-Outfit-Generator"
+FINE_TUNED_MODEL = "tryonlabs/FLUX.1-dev-LoRA-Outfit-Generator"
 
 # Load Flux
 pipe = FluxPipeline.from_pretrained(PRE_TRAINED_MODEL, torch_dtype=torch.float16).to("cuda")
@@ -49,13 +49,13 @@ https://github.com/ostris/ai-toolkit
 
 Weights for this model are available in Safetensors format.
 
-[Download](https://huggingface.co/tryonlabs/FLUX.1-dev-Outfit-Generator/tree/main) them in the Files & versions tab.
+[Download](https://huggingface.co/tryonlabs/FLUX.1-dev-LoRA-Outfit-Generator/tree/main) them in the Files & versions tab.
 
 ## Install dependencies
 
 ```
-git clone https://github.com/tryonlabs/FLUX.1-dev-Outfit-Generator.git
-cd FLUX.1-dev-Outfit-Generator
+git clone https://github.com/tryonlabs/FLUX.1-dev-LoRA-Outfit-Generator.git
+cd FLUX.1-dev-LoRA-Outfit-Generator
 conda create -n demo python=3.12
 pip install -r requirements.txt
 conda install pytorch pytorch-cuda=12.4 -c pytorch -c nvidia
