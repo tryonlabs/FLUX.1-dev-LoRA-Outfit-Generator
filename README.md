@@ -11,28 +11,28 @@ widget:
     Gabardine, Neckline: Collared, Pattern: Solid, Sleeve-Length: Sleeveless,
     Style: Casual, Type: Tunic, Waistline: Regular
   output:
-    url: images/sample4.jpeg
+    url: images/sample1.jpeg
 - text: >-
     A dress with Color: Red, Department: Dresses, Detail: Belted,
     Fabric-Elasticity: High Stretch, Fit: Fitted, Hemline: Flared, Material:
     Gabardine, Neckline: Off The Shoulder, Pattern: Floral, Sleeve-Length:
     Sleeveless, Style: Elegant, Type: Fit and Flare, Waistline: High
   output:
-    url: images/sample5.jpeg
+    url: images/sample2.jpeg
 - text: >-
     A dress with Color: Multicolored, Department: Dresses, Detail: Split,
     Fabric-Elasticity: High Stretch, Fit: Fitted, Hemline: Slit, Material:
     Gabardine, Neckline: V Neck, Pattern: Leopard, Sleeve-Length: Sleeveless,
     Style: Casual, Type: T Shirt, Waistline: Regular
   output:
-    url: images/sample6.jpeg
+    url: images/sample3.jpeg
 - text: >-
     A dress with Color: Brown, Department: Dresses, Detail: Zipper,
     Fabric-Elasticity: No Sretch, Fit: Fitted, Hemline: Asymmetrical, Material:
     Satin, Neckline: Spaghetti Straps, Pattern: Floral, Sleeve-Length:
     Sleeveless, Style: Boho, Type: Cami Top, Waistline: High
   output:
-    url: images/sample7.jpeg
+    url: images/sample4.jpeg
 base_model: black-forest-labs/FLUX.1-dev
 instance_prompt: null
 license: mit
