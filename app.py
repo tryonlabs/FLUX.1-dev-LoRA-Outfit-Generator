@@ -1,14 +1,19 @@
+import json
+import os.path
+import random
+import time
+
 import gradio as gr
 import numpy as np
-import random
-
 import spaces
-from diffusers import FluxPipeline
 import torch
+from diffusers import FluxPipeline
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 PRE_TRAINED_MODEL = "black-forest-labs/FLUX.1-dev"
 FINE_TUNED_MODEL = "tryonlabs/FLUX.1-dev-LoRA-Outfit-Generator"
+RESULTS_DIR = "~/results"
+os.makedirs(RESULTS_DIR, exist_ok=True)
 
 if torch.cuda.is_available():
     torch_dtype = torch.bfloat16
@@ -24,16 +29,17 @@ pipe.load_lora_weights(FINE_TUNED_MODEL, adapter_name="default", weight_name="ou
 MAX_SEED = np.iinfo(np.int32).max
 MAX_IMAGE_SIZE = 1024
 
+
 @spaces.GPU(duration=65)
 def infer(
-    prompt,
-    seed=42,
-    randomize_seed=False,
-    width=1024,
-    height=1024,
-    guidance_scale=4.5,
-    num_inference_steps=40,
-    progress=gr.Progress(track_tqdm=True),
+        prompt,
+        seed=42,
+        randomize_seed=False,
+        width=1024,
+        height=1024,
+        guidance_scale=4.5,
+        num_inference_steps=40,
+        progress=gr.Progress(track_tqdm=True),
 ):
     if randomize_seed:
         seed = random.randint(0, MAX_SEED)
@@ -42,7 +48,17 @@ def infer(
 
     image = pipe(prompt, height=width, width=height, num_images_per_prompt=1, generator=generator,
                  guidance_scale=guidance_scale,
-        num_inference_steps=num_inference_steps).images[0]
+                 num_inference_steps=num_inference_steps).images[0]
+
+    try:
+        # save image
+        current_time = int(time.time() * 1000)
+        image.save(os.path.join(RESULTS_DIR, f"gen_img_{current_time}.png"))
+        with open(os.path.join(RESULTS_DIR, f"gen_img_{current_time}.json"), "w") as f:
+            json.dump({"prompt": prompt, "height": height, "width": width, "guidance_scale": guidance_scale,
+                       "num_inference_steps": num_inference_steps, "seed": seed}, f)
+    except Exception as e:
+        print(str(e))
 
     return image, seed
 
@@ -83,7 +99,6 @@ with gr.Blocks(css=css) as demo:
         result = gr.Image(label="Result", show_label=False)
 
         with gr.Accordion("Advanced Settings", open=False):
-
             seed = gr.Slider(
                 label="Seed",
                 minimum=0,
@@ -100,7 +115,7 @@ with gr.Blocks(css=css) as demo:
                     minimum=512,
                     maximum=MAX_IMAGE_SIZE,
                     step=32,
-                    value=1024, 
+                    value=1024,
                 )
 
                 height = gr.Slider(
@@ -125,10 +140,11 @@ with gr.Blocks(css=css) as demo:
                     minimum=1,
                     maximum=50,
                     step=1,
-                    value=40, 
+                    value=40,
                 )
 
-        gr.Examples(examples=examples, inputs=[prompt], outputs=[result, seed], fn=infer, cache_examples=True, cache_mode="lazy")
+        gr.Examples(examples=examples, inputs=[prompt], outputs=[result, seed], fn=infer, cache_examples=True,
+                    cache_mode="lazy")
     gr.on(
         triggers=[run_button.click, prompt.submit],
         fn=infer,
